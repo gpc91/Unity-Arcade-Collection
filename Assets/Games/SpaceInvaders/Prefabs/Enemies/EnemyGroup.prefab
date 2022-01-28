@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6482908257723274734
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2946228995482524674}
+  - component: {fileID: 5864660530451575639}
+  - component: {fileID: 5835236779989173438}
+  m_Layer: 0
+  m_Name: EnemyGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2946228995482524674
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6482908257723274734}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5864660530451575639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6482908257723274734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45806d0335ff0284ba03cd146945dc42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemySmall: {fileID: -5283341113747687139, guid: 09c59c189ce145940b58712770b4cb04, type: 3}
+  enemyMedium: {fileID: -5561661049997719037, guid: 67823e3a5ae51224c92eddf88ecf846f, type: 3}
+  enemyLarge: {fileID: 4051686894670509678, guid: 5d9a352e9465934498a53ea0793372d6, type: 3}
+  enemyUFO: {fileID: 3076626498002671446, guid: 18e7021fc69a308468186e1ea0f86e38, type: 3}
+  livingColumns: 
+  enemiesAlive: 0
+  level: 0
+  secondsBetweenMove: 1
+  minimumSecondsMove: 0.1
+  MovementLeftAmount: 0.1
+  MovementRightAmount: 0.2
+  MovementDropAmount: 0.5
+--- !u!114 &5835236779989173438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6482908257723274734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed56846696fd0c2499e911b0be556b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 2519458509089676380, guid: 7a2949ee5df7d424a9ed293818d88fa1, type: 3}
