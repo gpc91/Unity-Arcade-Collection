@@ -44,13 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45806d0335ff0284ba03cd146945dc42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: 0
   enemySmall: {fileID: -5283341113747687139, guid: 09c59c189ce145940b58712770b4cb04, type: 3}
   enemyMedium: {fileID: -5561661049997719037, guid: 67823e3a5ae51224c92eddf88ecf846f, type: 3}
   enemyLarge: {fileID: 4051686894670509678, guid: 5d9a352e9465934498a53ea0793372d6, type: 3}
   enemyUFO: {fileID: 3076626498002671446, guid: 18e7021fc69a308468186e1ea0f86e38, type: 3}
+  UFOSpawnRateSeconds: 2
+  UFOSpawnChance: 0.1
   livingColumns: 
   enemiesAlive: 0
-  level: 0
   secondsBetweenMove: 1
   minimumSecondsMove: 0.1
   MovementLeftAmount: 0.1

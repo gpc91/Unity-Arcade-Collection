@@ -8,12 +8,31 @@ using Random = UnityEngine.Random;
 
 public class SpaceInvadersEnemyGroupController : MonoBehaviour
 {
+    
+    /// <summary>
+    /// GameManager of this group
+    /// </summary>
+    private SpaceInvadersManager manager;
+    public int level = 0;
 
     public SpaceInvadersEnemy enemySmall;
     public SpaceInvadersEnemy enemyMedium;
     public SpaceInvadersEnemy enemyLarge;
     public SpaceInvadersEnemy enemyUFO;
 
+    private SpaceInvadersEnemy spawnedUFO;
+    
+    /// <summary>
+    /// How often to try and randomly spawn a UFO in seconds
+    /// </summary>
+    public float UFOSpawnRateSeconds = 2f;
+    
+    /// <summary>
+    /// The chance of spawning a UFO
+    /// </summary>
+    [Range(0.0f, 1.0f)]
+    public float UFOSpawnChance = 0.1f;
+    
     // The bullet pool should exist as a component of the group controller
     internal SpaceInvadersBulletPool bulletPool;
     
@@ -42,10 +61,6 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
     public int rightColumn => livingColumns?.Count > 0 ? livingColumns[livingColumns.Count - 1] : -1;
 
     public int enemiesAlive;
-    
-    private SpaceInvadersManager manager;
-
-    public int level = 0;
 
     public float secondsBetweenMove = 1f;
     public float minimumSecondsMove = 0.05f;
@@ -91,7 +106,6 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
             if (enemy && enemy.isActiveAndEnabled) return enemy;
         }
         return null;
-        //throw new Exception("Something seriously went wrong...");
     }
 
     /// <summary>
@@ -106,10 +120,16 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         
         SpawnEnemies(ref enemyGrid);
 
+        // instantiate the UFO and deactivate
+        spawnedUFO = Instantiate(enemyUFO);
+        spawnedUFO.OnKilled += EnemyKilled;
+        spawnedUFO.gameObject.SetActive(false);
+
         bulletPool = GetComponent<SpaceInvadersBulletPool>();
         
         // start the enemies movement.
         StartCoroutine("EnemyMovementCycle");
+        StartCoroutine("UFOSpawnCoroutine");
     }
 
     /// <summary>
@@ -119,7 +139,6 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
     /// <returns>returns the spawned entity</returns>
     private SpaceInvadersEnemy SpawnEnemy(SpaceInvadersEnemy enemyPrefab)
     {
-        
         SpaceInvadersEnemy enemy;
         enemy = Instantiate(enemyPrefab, transform);
         enemy.OnKilled += EnemyKilled;
@@ -173,6 +192,27 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
     }
 
     /// <summary>
+    /// Spawn the UFO
+    /// </summary>
+    private void SpawnUFO()
+    {
+        // if we have no instantiated the UFO (we should have) do so now.
+        if (!spawnedUFO)
+        {
+            spawnedUFO = Instantiate(spawnedUFO);
+            spawnedUFO.OnKilled += EnemyKilled;
+        }
+
+        // if we are not already spawned...
+        if (!spawnedUFO.isActiveAndEnabled)
+        {
+            Debug.Log("Spawning UFO!");
+            spawnedUFO.gameObject.SetActive(true);
+            spawnedUFO.StartCoroutine("FreeMoveCoroutine");
+        }
+    }
+
+    /// <summary>
     /// Update the position of all enemies in this group
     /// </summary>
     /// <returns></returns>
@@ -218,6 +258,16 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
             enemy?.Shoot();
         }
     }
+
+    IEnumerator UFOSpawnCoroutine()
+    {
+        while (livingColumns?.Count > 0)
+        {
+            yield return new WaitForSeconds(UFOSpawnRateSeconds);
+            if (Random.value <= UFOSpawnChance) SpawnUFO();
+            //Debug.Log($"{UFOSpawnChance*100f}% chance: {Random.value <= UFOSpawnChance} spawned?");
+        }
+    }
     
     /// <summary>
     /// Reset the enemies
@@ -226,6 +276,10 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
     {
         // stop enemies from being affected by the movement cycle
         StopCoroutine("EnemyMovementCycle");
+        StopCoroutine("UFOSpawnCoroutine");
+        
+        //despawn UFO
+        if (spawnedUFO && spawnedUFO.gameObject.activeInHierarchy) spawnedUFO.gameObject.SetActive(false);
         
         // clean up bullets
         bulletPool.DespawnAll();
@@ -238,6 +292,7 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         // reset direction and start the movement cycle
         direction = 1;
         StartCoroutine("EnemyMovementCycle");
+        StartCoroutine("UFOSpawnCoroutine");
     }
     
     /// <summary>

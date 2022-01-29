@@ -16,7 +16,7 @@ public class SpaceInvadersEnemy : MonoBehaviour, IShootableSpaceInvaders
     public int walkStep = 0; // controls which sprite index is displayed
     public Sprite[] sprites;
     private SpriteRenderer renderer;
-
+    
     public void Init(SpaceInvadersEnemyGroupController groupController)
     {
         controller = groupController;
@@ -25,14 +25,19 @@ public class SpaceInvadersEnemy : MonoBehaviour, IShootableSpaceInvaders
     
     private void OnDisable()
     {
-        controller.OnEnemyMove -= Move;
+        if (enemyType != EnemyType.UFO) controller.OnEnemyMove -= Move;
+        // This is used to make sure we stop the FreeMoveCoroutine - However according to
+        // https://answers.unity.com/questions/34169/does-deactivating-a-gameobject-automatically-stop.html
+        // SetActive(false) disables the object,therefore automatically stops the coroutine. But just to be safe
+        // and make sure performance isn't affected stop all coroutines anyway.
+        StopAllCoroutines();
     }
 
     public void OnEnable()
     {
         if (controller != null)
         {
-            controller.OnEnemyMove += Move;
+            if (enemyType != EnemyType.UFO) controller.OnEnemyMove += Move;
         }
         
         renderer = renderer ? renderer : renderer = GetComponent<SpriteRenderer>();
@@ -99,5 +104,27 @@ public class SpaceInvadersEnemy : MonoBehaviour, IShootableSpaceInvaders
         Large,
         UFO
     }
-    
+
+    /// <summary>
+    /// Set the position and then start moving the UFO
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator FreeMoveCoroutine()
+    {
+        // choose a random direction
+        float direction = Mathf.Sign(UnityEngine.Random.Range(-1.0f, 1.0f));
+        // set the position to 10 units width opposite the direction of travel
+        transform.position = new Vector3(10 * (-direction), 4, 0);
+        while (isActiveAndEnabled)
+        {
+            yield return new WaitForEndOfFrame();
+            if (Mathf.Abs(transform.position.x) > 10f)
+            {
+                gameObject.SetActive(false);
+            }
+            transform.position += new Vector3(direction * 2f, 0, 0) * Time.deltaTime;
+            
+        }
+    }
+
 }

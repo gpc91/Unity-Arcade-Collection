@@ -24,9 +24,7 @@ public class SpaceInvadersBarrierBlock : MonoBehaviour, IShootableSpaceInvaders
 
     public void Reset()
     {
-        Debug.Log("resetting block");
         hitpoints = maxHitPoints;
-        Debug.Log($"hitpoints now {hitpoints}");
         renderer = renderer ? renderer : GetComponent<SpriteRenderer>();
         renderer.sprite = hitpoints > 0 && sprites.Length > 0 ? sprites[hitpoints-1] : renderer.sprite;
     }
