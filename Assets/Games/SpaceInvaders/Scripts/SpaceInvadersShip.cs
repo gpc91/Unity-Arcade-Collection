@@ -34,6 +34,9 @@ public class SpaceInvadersShip : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Move the player left by the amount given in the speed variable
+    /// </summary>
     public void MoveLeft()
     {
         if (transform.position.x > (-manager.GameBounds.x + (speed*Time.deltaTime)))
@@ -62,6 +65,10 @@ public class SpaceInvadersShip : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This reset the ability for the player to shoot after the seconds specified in the ShotCooldown property have elapsed
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ShotCooldownTimer()
     {
         yield return new WaitForSecondsRealtime(ShotCooldown);

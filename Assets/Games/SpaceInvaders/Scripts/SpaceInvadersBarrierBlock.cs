@@ -3,25 +3,39 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UI;
 
+/// <summary>
+/// A component that makes up a barrier
+/// </summary>
+[RequireComponent(typeof(SpriteRenderer))]
 public class SpaceInvadersBarrierBlock : MonoBehaviour, IShootableSpaceInvaders
 {
     public int maxHitPoints = 3;
     public int hitpoints = 3;
+    
+    public Sprite[] sprites;
+    private SpriteRenderer renderer;
 
-    private void Start()
+    private void OnEnable()
     {
+        Reset();
+    }
+
+    public void Reset()
+    {
+        Debug.Log("resetting block");
         hitpoints = maxHitPoints;
+        Debug.Log($"hitpoints now {hitpoints}");
+        renderer = renderer ? renderer : GetComponent<SpriteRenderer>();
+        renderer.sprite = hitpoints > 0 && sprites.Length > 0 ? sprites[hitpoints-1] : renderer.sprite;
     }
 
     public void Hit()
     {
         hitpoints--;
         if (hitpoints <= 0) gameObject.SetActive(false);
-        
-        // scales the alpha based upon how many hitpoints remain
-        // replace this with sprite swaps to indicate damage instead of alpha value.
-        GetComponent<SpriteRenderer>().color -= new Color(0, 0, 0, 1.0f / (maxHitPoints));
+        renderer.sprite = hitpoints > 0 && sprites.Length > 0 ? sprites[hitpoints-1] : renderer.sprite;
     }
     
 }

@@ -174,6 +174,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3730955568368965124, guid: f5e753ce70f773e4697598b8ffae7ca3, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1158986054}
     - target: {fileID: 8770410960729827404, guid: f5e753ce70f773e4697598b8ffae7ca3, type: 3}
       propertyPath: m_Name
       value: BaseBarrier
@@ -231,6 +235,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3730955568368965124, guid: f5e753ce70f773e4697598b8ffae7ca3, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1158986054}
     - target: {fileID: 8770410960729827404, guid: f5e753ce70f773e4697598b8ffae7ca3, type: 3}
       propertyPath: m_Name
       value: BaseBarrier (2)
@@ -288,6 +296,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3730955568368965124, guid: f5e753ce70f773e4697598b8ffae7ca3, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1158986054}
     - target: {fileID: 8770410960729827404, guid: f5e753ce70f773e4697598b8ffae7ca3, type: 3}
       propertyPath: m_Name
       value: BaseBarrier (3)
@@ -299,6 +311,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2797152241264218748, guid: 1a8c309d4a03d27408a40446073d1997, type: 3}
   m_PrefabInstance: {fileID: 1230901860}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1158986054 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 184819016932927918, guid: 1a8c309d4a03d27408a40446073d1997, type: 3}
+  m_PrefabInstance: {fileID: 1230901860}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1158986053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d688bca3b4cfc53488120f7e411a1d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!61 &1158986056
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -425,6 +448,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1383597345}
+  - component: {fileID: 1383597346}
   - component: {fileID: 1383597344}
   - component: {fileID: 1383597343}
   m_Layer: 0
@@ -452,7 +476,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.13725491, g: 0.14509805, b: 0.14509805, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -499,6 +523,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1383597346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383597342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AssetsPPU: 16
+  m_RefResolutionX: 320
+  m_RefResolutionY: 180
+  m_UpscaleRT: 0
+  m_PixelSnapping: 1
+  m_CropFrameX: 1
+  m_CropFrameY: 1
+  m_StretchFill: 1
 --- !u!1001 &1871254119
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -550,6 +594,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3730955568368965124, guid: f5e753ce70f773e4697598b8ffae7ca3, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1158986054}
     - target: {fileID: 8770410960729827404, guid: f5e753ce70f773e4697598b8ffae7ca3, type: 3}
       propertyPath: m_Name
       value: BaseBarrier (1)

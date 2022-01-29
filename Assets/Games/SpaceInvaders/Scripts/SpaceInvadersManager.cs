@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,13 +7,16 @@ public class SpaceInvadersManager : GameManager
 {
     public SpaceInvadersShip playerShip;
     public SpaceInvadersEnemyGroupController groupControllerPrefab;
+    private SpaceInvadersEnemyGroupController groupController;
 
-    public SpaceInvadersEnemyGroupController groupController;
-
+    public SpaceInvadersBarrier baseBarrierPrefab; 
+    
     public float difficulty = 1f;
     public int score = 0;
 
     public Vector2 GameBounds = new Vector2(7f, 5f);
+
+    public Action NextLevelAction;
     
     public void Init()
     {
@@ -37,9 +41,21 @@ public class SpaceInvadersManager : GameManager
         Init();
     }
 
+    /// <summary>
+    /// End the game and invokes the action to end the game (not yet implemented)
+    /// </summary>
     public void GameOver()
     {
         Debug.Log("Game Over!");
+    }
+
+    /// <summary>
+    /// Advances the game to the next level and invokes the action to reset game pieces
+    /// </summary>
+    public void NextLevel()
+    {
+        Debug.Log("Next level...");
+        NextLevelAction.Invoke();
     }
 
     // Update is called once per frame

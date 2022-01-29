@@ -102,6 +102,7 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
     {
         this.manager = manager;
         secondsBetweenMove = manager.difficulty;
+        manager.NextLevelAction += NextRound;
         
         SpawnEnemies(ref enemyGrid);
 
@@ -171,6 +172,10 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Update the position of all enemies in this group
+    /// </summary>
+    /// <returns></returns>
     IEnumerator EnemyMovementCycle()
     {
         while (livingColumns?.Count > 0)
@@ -235,6 +240,10 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         StartCoroutine("EnemyMovementCycle");
     }
     
+    /// <summary>
+    /// Increases the score and performs calculations to update the group information
+    /// </summary>
+    /// <param name="score">The score to add to the player for the kill</param>
     void EnemyKilled(int score)
     {
         enemiesAlive--;
@@ -262,10 +271,7 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         secondsBetweenMove = Mathf.Clamp(secondsBetweenMove, minimumSecondsMove, 1);
 
         // if we have killed all enemy columns, move to the next round
-        if (livingColumns?.Count <= 0) NextRound();
-        
-        //if (livingColumns?.Count <= 0) manager.GameOver();
-        
+        if (livingColumns?.Count <= 0) manager.NextLevel();
     }
     
 }

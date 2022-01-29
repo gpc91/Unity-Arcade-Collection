@@ -45,7 +45,8 @@ public class SpaceInvadersBulletPool : MonoBehaviour
         bullet.gameObject.SetActive(true);
         return bullet;
     }
-
+    
+                
     public SpaceInvadersBullet CreateBullet()
     {
         SpaceInvadersBullet bullet = Instantiate(bulletPrefab, transform, true);
