@@ -17,6 +17,8 @@ public class SpaceInvadersShip : MonoBehaviour
     public float speed = 2f;
     private bool canShoot = true;
 
+    public Vector3 startingPosition = new Vector3(0, -6.0f, 0);
+
     /// <summary>
     /// Time in seconds between shots
     /// </summary>
@@ -26,7 +28,7 @@ public class SpaceInvadersShip : MonoBehaviour
     {
         this.manager = manager;
         this.inputController = inputController;
-        transform.position = new Vector3(0, -4, 0);
+        transform.position = startingPosition;
         OnEnable();
 
         bullet = Instantiate(bulletPrefab, null, true);

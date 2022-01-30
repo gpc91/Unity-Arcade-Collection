@@ -17,10 +17,15 @@ public class SpaceInvadersEnemy : MonoBehaviour, IShootableSpaceInvaders
     public Sprite[] sprites;
     private SpriteRenderer renderer;
     
-    public void Init(SpaceInvadersEnemyGroupController groupController)
+    /// <summary>
+    /// Initialise the enemy
+    /// </summary>
+    /// <param name="groupController"></param>
+    /// <param name="register"></param>
+    public void Init(SpaceInvadersEnemyGroupController groupController, bool register = true)
     {
         controller = groupController;
-        controller.OnEnemyMove += Move;
+        if(register) controller.OnEnemyMove += Move;
     }
     
     private void OnDisable()
@@ -115,7 +120,7 @@ public class SpaceInvadersEnemy : MonoBehaviour, IShootableSpaceInvaders
         // choose a random direction
         float direction = Mathf.Sign(UnityEngine.Random.Range(-1.0f, 1.0f));
         // set the position to 10 units width opposite the direction of travel
-        transform.position = new Vector3(10 * (-direction), 4, 0);
+        transform.position = new Vector3(10 * (-direction), controller.UFOSpawnHeight, 0);
         while (isActiveAndEnabled)
         {
             yield return new WaitForEndOfFrame();

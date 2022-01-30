@@ -9,7 +9,7 @@ public class SpaceInvadersBullet : MonoBehaviour
     // the type name of the spawner
     private GameObject spawner;
 
-    public void Shoot(Vector2 direction, GameObject spawner, float velocity = 12f)
+    public void Shoot(Vector2 direction, GameObject spawner, float velocity = 16f)
     {
         this.spawner = spawner;
         GetComponent<Rigidbody2D>().AddForce(direction * velocity, ForceMode2D.Impulse);

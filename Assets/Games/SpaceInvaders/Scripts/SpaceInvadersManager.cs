@@ -36,8 +36,8 @@ public class SpaceInvadersManager : GameManager
     
     public void Init()
     {
-        // create ship
-        playerShip = Instantiate(playerShip, transform, true);
+        // create ship if it has not been assigned in the hierarchy
+        if (!playerShip) playerShip = Instantiate(playerShip, transform, true);
 
         // subscribe player to the input manager
         EntityInput input = playerShip.GetComponent<EntityInput>();
@@ -70,7 +70,6 @@ public class SpaceInvadersManager : GameManager
     /// </summary>
     public void NextLevel()
     {
-        Debug.Log("Next level...");
         NextLevelAction.Invoke();
     }
 

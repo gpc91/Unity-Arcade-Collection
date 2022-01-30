@@ -1,14 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class SpaceInvadersEnemyGroupController : MonoBehaviour
+public partial class SpaceInvadersEnemyGroupController : MonoBehaviour
 {
-    
+
     /// <summary>
     /// GameManager of this group
     /// </summary>
@@ -21,30 +19,34 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
     public SpaceInvadersEnemy enemyUFO;
 
     private SpaceInvadersEnemy spawnedUFO;
-    
+    public float UFOSpawnHeight = 5; 
+
     /// <summary>
     /// How often to try and randomly spawn a UFO in seconds
     /// </summary>
     public float UFOSpawnRateSeconds = 2f;
-    
+
     /// <summary>
     /// The chance of spawning a UFO
     /// </summary>
     [Range(0.0f, 1.0f)]
     public float UFOSpawnChance = 0.1f;
-    
+
     // The bullet pool should exist as a component of the group controller
     internal SpaceInvadersBulletPool bulletPool;
-    
+
     /// <summary>
     /// Controls the movement of any registered monobehaviour
     /// </summary>
     public Action<Vector3> OnEnemyMove;
+
+    private const int columns = 11;
+    private const int rows = 5;
     
     /// <summary>
     /// Grid of enemies used to check which columns are alive and which are dead
     /// </summary>
-    private SpaceInvadersEnemy[,] enemyGrid = new SpaceInvadersEnemy[11, 5];
+    private SpaceInvadersEnemy[,] enemyGrid = new SpaceInvadersEnemy[columns, rows];
 
     /// <summary>
     /// Used to store which columns are living and which are dead. This is used to speed up the column checks
@@ -72,7 +74,7 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
     /// direction of enemy travel : -1 = left, 1 = right
     /// </summary>
     private int direction = 1;
-    
+
     /// <summary>
     /// Checks to see if a column contains any active (alive) enemies.
     /// </summary>
@@ -87,7 +89,7 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         }
         return alive > 0 ? true : false;
     }
-    
+
     /// <summary>
     /// Get an enemy from a grid column
     /// </summary>
@@ -117,16 +119,17 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         this.manager = manager;
         secondsBetweenMove = manager.difficulty;
         manager.NextLevelAction += NextRound;
-        
+    
         SpawnEnemies(ref enemyGrid);
 
         // instantiate the UFO and deactivate
         spawnedUFO = Instantiate(enemyUFO);
         spawnedUFO.OnKilled += EnemyKilled;
         spawnedUFO.gameObject.SetActive(false);
+        spawnedUFO.Init(this, false);
 
         bulletPool = GetComponent<SpaceInvadersBulletPool>();
-        
+    
         // start the enemies movement.
         StartCoroutine("EnemyMovementCycle");
         StartCoroutine("UFOSpawnCoroutine");
@@ -166,25 +169,25 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
                         livingColumns?.Add(column);
                         break;
                     case 1:
-                        case 2:
+                    case 2:
                         typeToSpawn = enemyMedium;
                         break;
                     case 3:
-                        case 4:
+                    case 4:
                         typeToSpawn = enemyLarge;
                         break;
                 }
-                
+            
                 // Spawn a new enemy and assign it to the array if the array element does not already exist.
                 // if it does exist, set enemy to that element.
                 SpaceInvadersEnemy enemy;
                 enemies[column, row] = enemy = enemies[column, row] == null && typeToSpawn != null
                     ? SpawnEnemy(typeToSpawn)
                     : enemies[column, row];
-                
+            
                 // Position and activate the enemy
                 enemy.transform.position =
-                    new Vector3(-5f + (1f * column), (3.5f + (-1 * row)) - (0.25f * (level % 10)), 0);
+                    new Vector3(-5f + (1f * column), (transform.position.y + (-1 * row)) - (0.25f * (level % 10)), 0);
                 enemy.gameObject.SetActive(true);
                 enemiesAlive++;
             }
@@ -206,7 +209,6 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         // if we are not already spawned...
         if (!spawnedUFO.isActiveAndEnabled)
         {
-            Debug.Log("Spawning UFO!");
             spawnedUFO.gameObject.SetActive(true);
             spawnedUFO.StartCoroutine("FreeMoveCoroutine");
         }
@@ -222,7 +224,7 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         {
             // wait for set time
             yield return new WaitForSeconds(secondsBetweenMove);
-            
+        
             // move
             switch (direction)
             {
@@ -252,7 +254,7 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
                     }
                     break;
             }
-            
+        
             // shoot
             SpaceInvadersEnemy enemy = GetEnemy(Random.Range(0, 11), true);
             enemy?.Shoot();
@@ -265,10 +267,9 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         {
             yield return new WaitForSeconds(UFOSpawnRateSeconds);
             if (Random.value <= UFOSpawnChance) SpawnUFO();
-            //Debug.Log($"{UFOSpawnChance*100f}% chance: {Random.value <= UFOSpawnChance} spawned?");
         }
     }
-    
+
     /// <summary>
     /// Reset the enemies
     /// </summary>
@@ -277,13 +278,13 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         // stop enemies from being affected by the movement cycle
         StopCoroutine("EnemyMovementCycle");
         StopCoroutine("UFOSpawnCoroutine");
-        
+    
         //despawn UFO
         if (spawnedUFO && spawnedUFO.gameObject.activeInHierarchy) spawnedUFO.gameObject.SetActive(false);
-        
+    
         // clean up bullets
         bulletPool.DespawnAll();
-        
+    
         // respawn enemies
         SpawnEnemies(ref enemyGrid);
 
@@ -294,7 +295,7 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         StartCoroutine("EnemyMovementCycle");
         StartCoroutine("UFOSpawnCoroutine");
     }
-    
+
     /// <summary>
     /// Increases the score and performs calculations to update the group information
     /// </summary>
@@ -312,7 +313,7 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
                 livingColumns.RemoveAt(column);
             }
         }
-        
+    
         // if there are fewer than 15 enemies decrease time between moves more than if there are more
         if (enemiesAlive < 15)
         {
@@ -322,11 +323,11 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
         {
             secondsBetweenMove -= 0.005f;
         }
-        
+    
         secondsBetweenMove = Mathf.Clamp(secondsBetweenMove, minimumSecondsMove, 1);
 
         // if we have killed all enemy columns, move to the next round
         if (livingColumns?.Count <= 0) manager.NextLevel();
     }
-    
+
 }
