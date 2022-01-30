@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SpaceInvadersManager : GameManager
@@ -12,11 +13,26 @@ public class SpaceInvadersManager : GameManager
     public SpaceInvadersBarrier baseBarrierPrefab; 
     
     public float difficulty = 1f;
-    public int score = 0;
+    private int score = 0;
+
+    /// <summary>
+    /// The players score - if ScoreText is assigned will automatically update the text to reflect the score. 
+    /// </summary>
+    public int Score
+    {
+        get => score;
+        set
+        {
+            score = value;
+            if (ScoreText) ScoreText.text = score.ToString();
+        }
+    }
 
     public Vector2 GameBounds = new Vector2(7f, 5f);
 
     public Action NextLevelAction;
+
+    public TMP_Text ScoreText;
     
     public void Init()
     {

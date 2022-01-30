@@ -302,7 +302,7 @@ public class SpaceInvadersEnemyGroupController : MonoBehaviour
     void EnemyKilled(int score)
     {
         enemiesAlive--;
-        manager.score += score;
+        manager.Score += score;
         // check each currently living column in the list to see if that column is dead and if so, remove it.
         for (int column = livingColumns.Count-1; column >= 0; column--)
         {

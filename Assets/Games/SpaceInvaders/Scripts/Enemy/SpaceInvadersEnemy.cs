@@ -106,7 +106,8 @@ public class SpaceInvadersEnemy : MonoBehaviour, IShootableSpaceInvaders
     }
 
     /// <summary>
-    /// Set the position and then start moving the UFO
+    /// Set the position and then start moving the UFO - This coroutine allows an enemy to move without being
+    /// constrained to the grid and do so without being beholden to the OnEnemyMove Action
     /// </summary>
     /// <returns></returns>
     IEnumerator FreeMoveCoroutine()
@@ -123,7 +124,6 @@ public class SpaceInvadersEnemy : MonoBehaviour, IShootableSpaceInvaders
                 gameObject.SetActive(false);
             }
             transform.position += new Vector3(direction * 2f, 0, 0) * Time.deltaTime;
-            
         }
     }
 
